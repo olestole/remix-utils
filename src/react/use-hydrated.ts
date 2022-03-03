@@ -22,7 +22,7 @@ let hydrating = true;
 export function useHydrated() {
   let [hydrated, setHydrated] = useState(() => !hydrating);
 
-  useEffect(function hydrate() {
+  useEffect(() => {
     hydrating = false;
     setHydrated(true);
   }, []);

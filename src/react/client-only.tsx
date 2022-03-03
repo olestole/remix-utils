@@ -10,18 +10,11 @@ type DeprecatedProps = {
   fallback?: ReactNode;
 };
 
-type Props =
-  | DeprecatedProps
-  | {
-      /**
-       * You are encouraged to add a fallback that is the same dimensions
-       * as the client rendered children. This will avoid content layout
-       * shift which is disgusting
-       */
-      children: () => ReactNode;
-      fallback?: ReactNode;
-    };
 
+interface Props {
+  children: ReactNode | (() => ReactNode);
+  fallback?: ReactNode;
+}
 /**
  * Render the children only after the JS has loaded client-side. Use an optional
  * fallback component if the JS is not yet loaded.
@@ -44,7 +37,9 @@ export function ClientOnly({ children, fallback = null }: Props) {
     );
   }
 
-  return useHydrated() ? (
+  const hydrated = useHydrated();
+
+  return hydrated ? (
     <>{typeof children === "function" ? children() : children}</>
   ) : (
     <>{fallback}</>
