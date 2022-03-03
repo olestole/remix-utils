@@ -3,5 +3,6 @@
 node_modules
 
 /browser
-/build
+# Expose the build to be able to build in another project
+# /build
 /coverage
