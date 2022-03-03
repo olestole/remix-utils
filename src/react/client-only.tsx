@@ -10,7 +10,6 @@ type DeprecatedProps = {
   fallback?: ReactNode;
 };
 
-
 interface Props {
   children: ReactNode | (() => ReactNode);
   fallback?: ReactNode;
@@ -31,17 +30,15 @@ interface Props {
  * ```
  */
 export function ClientOnly({ children, fallback = null }: Props) {
+  const hydrated = useHydrated();
+
   if (typeof children !== "function") {
     console.warn(
       "[remix-utils] ClientOnly: Pass a function as children to avoid issues with client-only imported components"
     );
   }
 
-  const hydrated = useHydrated();
+  console.log("[remix-utils] ClientOnly: hydrated", hydrated);
 
-  return hydrated ? (
-    <>{typeof children === "function" ? children() : children}</>
-  ) : (
-    <>{fallback}</>
-  );
+  return <>{hydrated ? children : fallback}</>;
 }
